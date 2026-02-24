@@ -582,7 +582,7 @@
             <h2>Ready to solve your operational headache?</h2>
             <p style="margin-bottom: 32px;">Tell us what you're stuck on. We'll tell you if we can help and what it would take.</p>
             
-            <form class="contact-form" id="contactForm" action="https://whitedogops-api.onrender.com/contact" method="POST">
+            <form class="contact-form" id="contactForm" action="https://formspree.io/f/xnqebzqz" method="POST">
                 <div class="form-group">
                     <label for="name">Name</label>
                     <input type="text" id="name" name="name" placeholder="Your name" required>
@@ -613,14 +613,15 @@
                     btn.textContent = 'Sending...';
                     btn.disabled = true;
                     status.style.display = 'block';
-                    status.textContent = 'This may take a moment...';
+                    status.textContent = 'Sending...';
                     status.style.color = '#aaa';
                     
                     try {
                         const formData = new FormData(this);
                         const response = await fetch(this.action, {
                             method: 'POST',
-                            body: formData
+                            body: formData,
+                            headers: { 'Accept': 'application/json' }
                         });
                         
                         if (response.ok) {
