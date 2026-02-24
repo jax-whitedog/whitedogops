@@ -582,7 +582,7 @@
             <h2>Ready to solve your operational headache?</h2>
             <p style="margin-bottom: 32px;">Tell us what you're stuck on. We'll tell you if we can help and what it would take.</p>
             
-            <form class="contact-form" action="https://whitedogops-api.onrender.com/contact" method="POST">
+            <form class="contact-form" id="contactForm" action="https://whitedogops-api.onrender.com/contact" method="POST">
                 <div class="form-group">
                     <label for="name">Name</label>
                     <input type="text" id="name" name="name" placeholder="Your name" required>
@@ -599,8 +599,46 @@
                     <label for="problem">What problem are you trying to solve?</label>
                     <textarea id="problem" name="problem" placeholder="Describe the manual work that's slowing you down..." required></textarea>
                 </div>
-                <button type="submit" class="submit-button">Send inquiry</button>
+                <button type="submit" class="submit-button" id="submitBtn">Send inquiry</button>
             </form>
+            
+            <div id="formStatus" style="margin-top: 16px; font-size: 15px; display: none;"></div>
+            
+            <script>
+                document.getElementById('contactForm').addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    const btn = document.getElementById('submitBtn');
+                    const status = document.getElementById('formStatus');
+                    
+                    btn.textContent = 'Sending...';
+                    btn.disabled = true;
+                    status.style.display = 'block';
+                    status.textContent = 'This may take a moment...';
+                    status.style.color = '#aaa';
+                    
+                    try {
+                        const formData = new FormData(this);
+                        const response = await fetch(this.action, {
+                            method: 'POST',
+                            body: formData
+                        });
+                        
+                        if (response.ok) {
+                            status.textContent = 'Thanks! We\'ll be in touch soon.';
+                            status.style.color = '#4CAF50';
+                            this.reset();
+                        } else {
+                            throw new Error('Server error');
+                        }
+                    } catch (error) {
+                        status.textContent = 'Something went wrong. Please email jax@whitedogops.com directly.';
+                        status.style.color = '#f44336';
+                    } finally {
+                        btn.textContent = 'Send inquiry';
+                        btn.disabled = false;
+                    }
+                });
+            </script>
             
             <p style="margin-top: 32px; font-size: 15px; color: #777;">Or email directly: <a href="mailto:jax@whitedogops.com" class="email-link">jax@whitedogops.com</a></p>
         </div>
